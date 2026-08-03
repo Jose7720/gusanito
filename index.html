@@ -1,1 +1,120 @@
-gusanito
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Mi Mini Tienda</title>
+    <!-- SDK de Telegram -->
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            background-color: var(--tg-theme-bg-color, #f5f5f5);
+            color: var(--tg-theme-text-color, #222);
+            margin: 0;
+            padding: 15px;
+            box-sizing: border-box;
+        }
+
+        h1 {
+            text-align: center;
+            font-size: 22px;
+            margin-bottom: 20px;
+        }
+
+        .product-card {
+            background-color: var(--tg-theme-secondary-bg-color, #ffffff);
+            border-radius: 12px;
+            padding: 15px;
+            margin-bottom: 12px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+        }
+
+        .product-info h3 {
+            margin: 0 0 5px 0;
+            font-size: 16px;
+        }
+
+        .product-info p {
+            margin: 0;
+            font-size: 14px;
+            color: var(--tg-theme-hint-color, #888);
+        }
+
+        .buy-btn {
+            background-color: var(--tg-theme-button-color, #0088cc);
+            color: var(--tg-theme-button-text-color, #ffffff);
+            border: none;
+            padding: 10px 16px;
+            border-radius: 8px;
+            font-weight: bold;
+            font-size: 14px;
+            cursor: pointer;
+        }
+
+        .buy-btn:active {
+            opacity: 0.8;
+        }
+    </style>
+</head>
+<body>
+
+    <h1 id="greeting">🛍️ Mi Tienda en Telegram</h1>
+
+    <div id="product-list">
+        <!-- Producto 1 -->
+        <div class="product-card">
+            <div class="product-info">
+                <h3>Camisa Deportiva</h3>
+                <p>$15.00 USD</p>
+            </div>
+            <button class="buy-btn" onclick="comprar('Camisa Deportiva', 15)">Comprar</button>
+        </div>
+
+        <!-- Producto 2 -->
+        <div class="product-card">
+            <div class="product-info">
+                <h3>Gorra Casual</h3>
+                <p>$10.00 USD</p>
+            </div>
+            <button class="buy-btn" onclick="comprar('Gorra Casual', 10)">Comprar</button>
+        </div>
+
+        <!-- Producto 3 -->
+        <div class="product-card">
+            <div class="product-info">
+                <h3>Taza Térmica</h3>
+                <p>$12.50 USD</p>
+            </div>
+            <button class="buy-btn" onclick="comprar('Taza Térmica', 12.5)">Comprar</button>
+        </div>
+    </div>
+
+    <script>
+        // Inicializar Telegram Web App
+        const tg = window.Telegram.WebApp;
+        tg.ready();
+        tg.expand();
+
+        // Saludar al usuario con su nombre de Telegram
+        if (tg.initDataUnsafe && tg.initDataUnsafe.user) {
+            document.getElementById('greeting').innerText = "¡Hola, " + tg.initDataUnsafe.user.first_name + "! 🛍️";
+        }
+
+        function comprar(producto, precio) {
+            // Feedback táctil
+            if (tg.HapticFeedback) {
+                tg.HapticFeedback.notificationOccurred('success');
+            }
+
+            // Alerta nativa de Telegram confirmando la acción
+            tg.showAlert(`¡Has seleccionado: ${producto} por $${precio} USD!\n\nPronto conectaremos esto a tu Excel.`);
+            
+            // AQUÍ ES DONDE LUEGO CONECTAREMOS GOOGLE SHEETS
+        }
+    </script>
+</body>
+</html>
